@@ -15,8 +15,9 @@
 	</properties>
 
 	<modules>
-		<module>plugins/org.rcp.e4.sample.core</module>
-		<module>plugins/org.rcp.e4.sample.preference</module>
+		<module>plugins/rcp.e4.sample.core</module>
+		<module>plugins/rcp.e4.sample.preference</module>
+		<module>plugins/rcp.e4.sample.connection</module>
 	</modules>
 
 	<repositories>
