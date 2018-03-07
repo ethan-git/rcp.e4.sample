@@ -23,6 +23,10 @@ import java.net.URL;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import rcp.e4.sample.core.exception.SystemException;
 
 /**
  * PreferenceStoredData
@@ -32,6 +36,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
  */
 public class PreferenceStoredData {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(PreferenceStoredData.class);
+
 	/**
 	 * getPreferenceURL
 	 *
@@ -39,6 +45,7 @@ public class PreferenceStoredData {
 	 * @return URL
 	 */
 	public static URL getPreferenceURL(String nodeName) {
+		LOGGER.debug("nodeName:{}", nodeName);
 		IEclipsePreferences preferences = ConfigurationScope.INSTANCE.getNode(nodeName);
 		String confiurationPath = String.format("%s%s", Platform.getConfigurationLocation().getURL().getPath(),
 				preferences.absolutePath());
@@ -46,8 +53,9 @@ public class PreferenceStoredData {
 		URL url = null;
 		try {
 			url = file.toURI().toURL();
+			LOGGER.debug("url:{}", url);
 		} catch (MalformedURLException e) {
-			throw new RuntimeException(e);
+			throw new SystemException(e);
 		}
 		return url;
 	}

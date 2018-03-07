@@ -1,4 +1,4 @@
-package rcp.e4.sample.preference;
+package rcp.e4.sample.core;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
