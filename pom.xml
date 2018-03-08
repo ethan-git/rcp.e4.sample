@@ -19,6 +19,7 @@
 		<module>plugins/rcp.e4.sample.preference</module>
 		<module>plugins/rcp.e4.sample.connection</module>
 		<module>plugins/rcp.e4.sample.service</module>
+		<module>plugins/rcp.e4.sample.service.query</module>
 	</modules>
 
 	<repositories>
