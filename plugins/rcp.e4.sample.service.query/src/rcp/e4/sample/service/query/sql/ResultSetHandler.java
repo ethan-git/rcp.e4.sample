@@ -87,28 +87,37 @@ public class ResultSetHandler {
 	 * @param fetchSize
 	 * @return rows
 	 */
-	public List<Object[]> getFetchRows(int fetchSize) {
-		List<Object[]> rows = new ArrayList<Object[]>();
+	public Object[] getFetchRows(int fetchSize) {
 
 		// all rows fetched.
 		if (this.currentRowIndex == this.totalRowCnt) {
 			LOGGER.debug("all rows fetched.[currentRowIndex:{}, totalRowCnt:{}]", this.currentRowIndex,
 					this.totalRowCnt);
-			return rows;
+			return new Object[0];
 		}
+
+		int rowSize = fetchSize;
+
+		// set row size for last block.
+		if (this.currentRowIndex + fetchSize > this.totalRowCnt) {
+			rowSize = this.totalRowCnt - this.currentRowIndex;
+		}
+		Object[] rows = new Object[rowSize];
 
 		try {
 			// set position current row index.
 			this.resultSet.absolute(this.currentRowIndex);
 			this.resultSet.setFetchSize(fetchSize);
 
-			while (rows.size() < fetchSize && this.resultSet.next()) {
+			int rowIndex = 0;
+			while (rowIndex < rowSize && this.resultSet.next()) {
 				this.currentRowIndex++;
 				Object[] row = new Object[this.columnCnt];
 				for (int i = 0; i < this.columnCnt; i++) {
 					row[i] = this.resultSet.getObject(i + 1);
 				}
-				rows.add(row);
+				rows[rowIndex]=row;
+				rowIndex++;
 			}
 
 			// all rows fetched.

@@ -49,6 +49,8 @@ public class SqlExecuteService implements Callable<ResultSetHandler> {
 	}
 
 	/**
+	 * setSql
+	 *
 	 * @param sql
 	 */
 	public void setSql(String sql) {
@@ -69,5 +71,9 @@ public class SqlExecuteService implements Callable<ResultSetHandler> {
 		ResultSet resultSet = preparedStatement.executeQuery();
 		ResultSetHandler resultSetHandler = new ResultSetHandler(connection, preparedStatement, resultSet);
 		return resultSetHandler;
+	}
+
+	public static SqlExecuteService getInstance() {
+		return new SqlExecuteService();
 	}
 }

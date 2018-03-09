@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmi:id="_c3AF0MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.application" bindingContexts="_c3AF2cjYEeSyMNYR5xypkQ">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Empty E4 Application" width="500" height="400"/>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_c3AF0MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.application" bindingContexts="_c3AF2cjYEeSyMNYR5xypkQ">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_c3AF0cjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.window.main" label="Sample E4 Application" width="1000" height="800">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_KtTd8CNmEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.perspectivestack.0">
+      <children xsi:type="advanced:Perspective" xmi:id="_L0csMCNmEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.perspective.0">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_ONausCNmEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.partsashcontainer.0">
+          <children xsi:type="basic:PartStack" xmi:id="_RHvx0CNmEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.partstack.0">
+            <children xsi:type="basic:Part" xmi:id="_S4L0sCNmEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.part.sql" contributionURI="bundleclass://rcp.e4.sample.service.query/rcp.e4.sample.service.query.ui.SqlExecuteServiceView" label="sql" tooltip="sql"/>
+          </children>
+        </children>
+      </children>
+    </children>
+    <handlers xmi:id="_cDRgsCNlEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.handler.0" contributionURI="bundleclass://rcp.e4.sample.connection/rcp.e4.sample.connection.ui.handler.ConnectionDialogOpenHandler" command="_hpVxUCNlEei2x8i2ZvpuoA"/>
+    <trimBars xmi:id="_tEuPgCNlEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.trimbar.0">
+      <children xsi:type="menu:ToolBar" xmi:id="_t-vAsCNlEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.toolbar.0">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_vBooICNlEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.handledtoolitem.connections" accessibilityPhrase="connections" label="connections" command="_hpVxUCNlEei2x8i2ZvpuoA"/>
+      </children>
+    </trimBars>
+  </children>
   <rootContext xmi:id="_c3AF2cjYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_c3AF2sjYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_c3AF28jYEeSyMNYR5xypkQ" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
+  <commands xmi:id="_hpVxUCNlEei2x8i2ZvpuoA" elementId="rcp.e4.sample.service.query.command.connection" commandName="connection"/>
   <addons xmi:id="_c3AF0sjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_c3AF08jYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_c3AF1MjYEeSyMNYR5xypkQ" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
