@@ -30,3 +30,10 @@ Bundle-ClassPath: lib/commons-dbcp-1.4.jar,
  lib/ojdbc6-12.1.0.2.jar,
  lib/postgresql-42.1.4.jar,
  .
+Export-Package: rcp.e4.sample.connection.data,
+ rcp.e4.sample.connection.pool,
+ rcp.e4.sample.connection.pool.extend,
+ rcp.e4.sample.connection.ui,
+ rcp.e4.sample.connection.ui.dialog,
+ rcp.e4.sample.connection.ui.handler,
+ rcp.e4.sample.connection.util
