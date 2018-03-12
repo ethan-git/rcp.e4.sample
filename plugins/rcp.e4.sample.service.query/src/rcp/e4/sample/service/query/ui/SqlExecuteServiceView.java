@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -86,8 +87,11 @@ public class SqlExecuteServiceView extends ExecuteServiceView {
 				if (event.stateMask == SWT.CTRL && (event.keyCode == SWT.CR || event.keyCode == SWT.KEYPAD_CR)) {
 					event.doit = false;
 					sqlExecuteService.setSql(text.getText());
-					resultSetHandler = (ResultSetHandler) executeService(sqlExecuteService);
-					initExecuteQuery();
+					ResultSetHandler result = (ResultSetHandler) executeService(sqlExecuteService);
+					if(result!=null) {
+						resultSetHandler = result;
+						initExecuteQuery();
+					}
 				}
 			}
 		});
@@ -104,8 +108,8 @@ public class SqlExecuteServiceView extends ExecuteServiceView {
 	}
 
 	@Override
-	public void error(Throwable cause) {
-		LOGGER.debug("error:{}", cause);
+	public void error(Throwable throwable) {
+		MessageDialog.open(MessageDialog.WARNING, this.text.getShell(), "Check", throwable.getCause().getMessage(), SWT.NONE);
 	}
 
 	private void initExecuteQuery() {

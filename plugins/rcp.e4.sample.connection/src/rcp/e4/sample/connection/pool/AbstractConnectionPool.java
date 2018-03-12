@@ -55,6 +55,9 @@ public abstract class AbstractConnectionPool implements IConnectionPool, IConnec
 	public Connection getConnection() {
 		Connection connection = null;
 		try {
+			if (this.dataSource == null) {
+				throw new NoDataSourceException("No DataSource.\nPlease, Check Connection Information.");
+			}
 			connection = this.dataSource.getConnection();
 		} catch (SQLException e) {
 			throw new SystemException(e);

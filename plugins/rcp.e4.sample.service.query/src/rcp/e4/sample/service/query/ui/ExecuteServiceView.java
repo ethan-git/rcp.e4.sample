@@ -25,6 +25,7 @@ import org.eclipse.e4.ui.di.UISynchronize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import rcp.e4.sample.core.exception.SystemException;
 import rcp.e4.sample.service.execute.IExecuteServiceManager;
 import rcp.e4.sample.service.execute.ServiceManagerFactory;
 
@@ -50,11 +51,14 @@ public abstract class ExecuteServiceView {
 		Object result = null;
 		try {
 			result = this.executeServiceManager.execute(service).get();
+		} catch (SystemException e) {
+			LOGGER.debug("SystemException:{}", e.getMessage());
+			error(e);
 		} catch (InterruptedException e) {
-			LOGGER.debug("InterruptedException:{}", e);
+			LOGGER.debug("InterruptedException:{}", e.getMessage());
 			error(e);
 		} catch (ExecutionException e) {
-			LOGGER.debug("ExecutionException:{}", e);
+			LOGGER.debug("ExecutionException:{}", e.getMessage());
 			error(e);
 		}
 		return result;
