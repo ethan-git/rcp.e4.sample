@@ -16,16 +16,10 @@
 
 package rcp.e4.sample.service.query.sql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import rcp.e4.sample.connection.pool.ConnectionPoolFactory;
-import rcp.e4.sample.connection.pool.IConnectionPool;
 
 /**
  * SqlExecuteService
@@ -36,17 +30,7 @@ import rcp.e4.sample.connection.pool.IConnectionPool;
 public class SqlExecuteService implements Callable<ResultSetHandler> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SqlExecuteService.class);
-
-	private IConnectionPool connectionPool;
 	private String sql;
-
-	/**
-	 * SqlExecuteService
-	 *
-	 */
-	public SqlExecuteService() {
-		this.connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
-	}
 
 	/**
 	 * setSql
@@ -65,11 +49,7 @@ public class SqlExecuteService implements Callable<ResultSetHandler> {
 	@Override
 	public ResultSetHandler call() throws Exception {
 		LOGGER.debug("sql:{}", sql);
-		Connection connection = this.connectionPool.getConnection();
-		PreparedStatement preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
-				ResultSet.CONCUR_UPDATABLE);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		ResultSetHandler resultSetHandler = new ResultSetHandler(connection, preparedStatement, resultSet);
+		ResultSetHandler resultSetHandler = new ResultSetHandler(sql);
 		return resultSetHandler;
 	}
 

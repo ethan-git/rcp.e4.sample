@@ -17,16 +17,18 @@
 package rcp.e4.sample.service.query.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import rcp.e4.sample.connection.pool.ConnectionPoolFactory;
+import rcp.e4.sample.connection.pool.IConnectionPool;
 import rcp.e4.sample.core.exception.SystemException;
 
 /**
@@ -39,9 +41,10 @@ public class ResultSetHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultSetHandler.class);
 
-	private Connection connection;
-	private Statement statement;
+	private IConnectionPool connectionPool;
+	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
+	private String sql;
 	private int currentRowIndex;
 	private int totalRowCnt;
 	private int columnCnt;
@@ -54,12 +57,23 @@ public class ResultSetHandler {
 	 * @param statement
 	 * @param resultSet
 	 */
-	public ResultSetHandler(Connection connection, Statement statement, ResultSet resultSet) {
-		this.connection = connection;
-		this.statement = statement;
-		this.resultSet = resultSet;
+	public ResultSetHandler(String sql) {
+		this.sql = sql;
 		this.currentRowIndex = 0;
+		connection();
 		initialize();
+	}
+
+	private void connection() {
+		this.connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+		Connection connection = this.connectionPool.getConnection();
+		try {
+			this.preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			this.resultSet = preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			throw new SystemException(e);
+		}
 	}
 
 	private void initialize() {
@@ -88,6 +102,8 @@ public class ResultSetHandler {
 	 * @return rows
 	 */
 	public Object[] getFetchRows(int fetchSize) {
+
+		checkConnectionStatus();
 
 		// all rows fetched.
 		if (this.currentRowIndex == this.totalRowCnt) {
@@ -139,17 +155,33 @@ public class ResultSetHandler {
 		return this.resultColumnMetaInfoList;
 	}
 
+	private void checkConnectionStatus() {
+		boolean isConnected = true;
+		try {
+			if(this.preparedStatement.isClosed()) {
+				isConnected = false;
+			}
+		} catch (SQLException e) {
+			isConnected = false;
+		}
+
+		if(!isConnected) {
+			connection();
+		}
+	}
+
 	/**
 	 * closeQuietly
 	 */
 	public void closeQuietly() {
 		LOGGER.debug("closeQuietly.");
 		try {
-			if (this.statement != null) {
-				this.statement.close();
-			}
-			if (this.connection != null) {
-				this.connection.close();
+			if (this.preparedStatement != null) {
+				Connection connection = this.preparedStatement.getConnection();
+				if (connection != null) {
+					connection.close();
+				}
+				this.preparedStatement.close();
 			}
 		} catch (SQLException e) {
 			// Ignore.
