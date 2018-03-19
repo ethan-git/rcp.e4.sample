@@ -60,12 +60,13 @@ public class ResultSetHandler {
 	public ResultSetHandler(String sql) {
 		this.sql = sql;
 		this.currentRowIndex = 0;
+		this.connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
 		connection();
 		initialize();
 	}
 
 	private void connection() {
-		this.connectionPool = ConnectionPoolFactory.getInstance().getConnectionPool();
+		LOGGER.debug("connection...");
 		Connection connection = this.connectionPool.getConnection();
 		try {
 			this.preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -166,6 +167,7 @@ public class ResultSetHandler {
 		}
 
 		if(!isConnected) {
+			closeQuietly();
 			connection();
 		}
 	}
