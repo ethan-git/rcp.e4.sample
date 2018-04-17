@@ -16,12 +16,18 @@
 
 package rcp.e4.sample.web.view;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.annotation.PostConstruct;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
+import org.osgi.framework.FrameworkUtil;
+
+import rcp.e4.sample.core.exception.SystemException;
 
 /**
  * WebView
@@ -38,7 +44,12 @@ public class WebView {
 		this.browser = new Browser(parent, SWT.NONE);
 //		browser.setUrl("www.google.com");
 //		this.browser.setText("<html><body><h1>Hello</h1></body></html>");
-		String baseUrl = Platform.getInstanceLocation().getURL().getPath();
-		browser.setUrl(String.format("%s/%s", baseUrl, "script/index.html"));
+		URL url = FrameworkUtil.getBundle(this.getClass()).getEntry("script/index.html");
+		try {
+			URL localurl = FileLocator.toFileURL(url);
+			this.browser.setUrl(localurl.getPath());
+		} catch (IOException e) {
+			throw new SystemException(e);
+		}
 	}
 }
