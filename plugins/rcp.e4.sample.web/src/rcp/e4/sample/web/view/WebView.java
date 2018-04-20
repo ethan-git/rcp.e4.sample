@@ -24,10 +24,14 @@ import javax.annotation.PostConstruct;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Composite;
 import org.osgi.framework.FrameworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import rcp.e4.sample.core.exception.SystemException;
+import rcp.e4.sample.web.view.func.BrowserCommonFunction;
 
 /**
  * WebView
@@ -36,20 +40,27 @@ import rcp.e4.sample.core.exception.SystemException;
  *
  */
 public class WebView {
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebView.class);
+
 	private Browser browser;
+	private BrowserFunction function;
 	
 	@PostConstruct
 	public void createComposite(Composite parent) {
+		LOGGER.debug("createComposite");
 		this.browser = new Browser(parent, SWT.NONE);
 //		browser.setUrl("www.google.com");
 //		this.browser.setText("<html><body><h1>Hello</h1></body></html>");
-		URL url = FrameworkUtil.getBundle(this.getClass()).getEntry("script/index.html");
+		URL url = FrameworkUtil.getBundle(this.getClass()).getEntry("app/index.html");
 		try {
 			URL localurl = FileLocator.toFileURL(url);
 			this.browser.setUrl(localurl.getPath());
 		} catch (IOException e) {
 			throw new SystemException(e);
 		}
+		
+		this.function = new BrowserCommonFunction(this.browser, "callService");
 	}
+	
 }
