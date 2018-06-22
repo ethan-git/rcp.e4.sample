@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:    
+    working_directory: ~/rcp/sample
+
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    steps:
+      - checkout
+      - run: mvn -f pom.xml package dependency:go-offline
+      - run: mvn -f pom.xml clean install
+      - run: mvn sonar:sonar \
+            -Dsonar.organization=ethan-git-github \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=ethan
+      
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: sdq-{{ checksum "pom.xml" }}
