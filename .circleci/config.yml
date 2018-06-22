@@ -10,11 +10,7 @@ jobs:
       - checkout
       - run: mvn -f pom.xml package dependency:go-offline
       - run: mvn -f pom.xml clean install
-      - run: mvn sonar:sonar \
-            -Dsonar.organization=ethan-git-github \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=ethan
-      
+      - run: mvn -f pom.xml sonar:sonar -Dsonar.organization=ethan-git-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ethan
 
       - save_cache:
           paths:
