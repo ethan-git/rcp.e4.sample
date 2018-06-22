@@ -19,4 +19,4 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: sdq-{{ checksum "pom.xml" }}
+          key: rcp-sample-{{ checksum "pom.xml" }}
